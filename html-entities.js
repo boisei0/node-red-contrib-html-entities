@@ -18,11 +18,11 @@ module.exports = function(RED) {
                         RED.util.setMessageProperty(msg, node.property, he.encode(value));
                         break;
                     case 'escape':
-                        RED.util.setMessageProperty(msg, node.property, he.escape(msg.payload));
+                        RED.util.setMessageProperty(msg, node.property, he.escape(value));
                         break;
                     case 'decode':
                     case 'unescape':
-                        RED.util.setMessageProperty(msg, node.property, he.decode(msg.payload));
+                        RED.util.setMessageProperty(msg, node.property, he.decode(value));
                         break;
                     default:
                         const err = `The selected mode ${node.mode} is not known.`;
