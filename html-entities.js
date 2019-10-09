@@ -4,25 +4,25 @@ module.exports = function(RED) {
 
     function HeNode(config) {
         RED.nodes.createNode(this, config);
+        this.property = config.property || "payload";
         this.mode = config.mode;
 
         let node = this;
         this.on('input', function(msg, send, done) {
             send = send || function() { node.send.apply(node,arguments) };
 
-            if (msg.hasOwnProperty('payload')) {
+            const value = RED.util.getMessageProperty(msg,node.property);
+            if (value !== undefined) {
                 switch (node.mode) {
                     case 'encode':
-                        msg.payload = he.encode(msg.payload);
+                        RED.util.setMessageProperty(msg, node.property, he.encode(value));
                         break;
                     case 'escape':
-                        msg.payload = he.escape(msg.payload);
-                        if (done) done();
+                        RED.util.setMessageProperty(msg, node.property, he.escape(msg.payload));
                         break;
                     case 'decode':
                     case 'unescape':
-                        msg.payload = he.decode(msg.payload);
-                        if (done) done();
+                        RED.util.setMessageProperty(msg, node.property, he.decode(msg.payload));
                         break;
                     default:
                         const err = `The selected mode ${node.mode} is not known.`;
@@ -33,6 +33,11 @@ module.exports = function(RED) {
                         }
                         return;
                 }
+                node.send(msg);
+                if (done) done();
+            }
+            else {
+                // pass through message unchanged
                 node.send(msg);
                 if (done) done();
             }

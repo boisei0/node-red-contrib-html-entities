@@ -7,12 +7,18 @@
             name: {
                 value: ""
             },
+            property: {
+                value: "payload"
+            },
             mode: {
                 value: "",
                 required: true,
                 validate: function (v) {
                     return ['encode', 'decode', 'escape', 'unescape'].includes(v)
                 },
+            },
+            oneditprepare: function() {
+                $("#node-input-property").typedInput({default: 'msg', types: ['msg']});
             }
         },
         inputs: 1,
@@ -29,6 +35,10 @@
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
+        <div class="form-row">
+        <label for="node-input-property"><i class="fa fa-ellipsis-h"></i> Property</label>
+        <input type="text" id="node-input-property" style="width:70%">
+    </div>
     <div class="form-row">
         <label for="node-input-mode"><i class="fa fa-cog"></i> Mode</label>
         <select id="node-input-mode">
@@ -42,10 +52,4 @@
 <script type="text/x-red" data-help-name="html-entities">
    <p><code>html-entities</code> allows encoding/decoding of html entities inside <code>msg.payload</code>.</p>
    <h3>Outputs</h3>
-   <dl class="message-properties">
-       <dt>payload
-           <span class="property-type">string</span>
-       </dt>
-       <dd>the incoming payload after encoding/decoding.</dd>
-   </dl>
 </script>
