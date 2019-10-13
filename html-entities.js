@@ -8,6 +8,20 @@ module.exports = function(RED) {
         this.propertyType = config.propertyType || "msg";
         this.mode = config.mode;
 
+        this.options = {
+            encode: {
+                strict: config.optionsStrict,
+                useNamedReferences: config.optionsUseNamedReferences,
+                decimal: config.optionsPreferDecimal,
+                encodeEverything: config.optionsEncodeEverything,
+                allowUnsafeSymbols: config.optionsAllowUnsafeSymbols
+            },
+            decode: {
+                strict: config.optionsStrict,
+                isAttributeValue: config.optionsIsAttributeValue
+            }
+        };
+
         let node = this;
 
         /**
@@ -18,7 +32,6 @@ module.exports = function(RED) {
          * @returns {Promise<>}
          */
         function getValue(msg, prop, propT) {
-            node.warn(`GET: ${msg} | ${prop} | ${propT}`);
             if (propT === 'msg') {
                 return Promise.resolve(RED.util.getMessageProperty(msg, prop));
             }
@@ -48,8 +61,6 @@ module.exports = function(RED) {
          * @returns {Promise<>}
          */
         function setValue(msg, prop, propT, value) {
-            node.warn(`SET: ${msg} | ${prop} | ${propT} | ${value}`);
-
             if (propT === 'msg') {
                 return Promise.resolve(RED.util.setMessageProperty(msg, prop, value, true));
             }
@@ -78,21 +89,12 @@ module.exports = function(RED) {
                 if (value !== undefined) {
                     switch (node.mode) {
                         case 'encode':
-                            return he.encode(value, {
-                                strict: node.optionsStrict,
-                                useNamedReferences: node.optionsUseNamedReferences,
-                                decimal: node.optionsPreferDecimal,
-                                encodeEverything: node.optionsEncodeEverything,
-                                allowUnsafeSymbols: node.optionsAllowUnsafeSymbols
-                            });
+                            return he.encode(value, node.options.encode);
                         case 'escape':
                             return he.escape(value);
                         case 'decode':
                         case 'unescape':
-                            return he.decode(value, {
-                                strict: node.optionsStrict,
-                                isAttributeValue: node.optionsIsAttributeValue
-                            });
+                            return he.decode(value, node.options.decode);
                         default:
                             const err = `The selected mode ${node.mode} is not known.`;
                             throw new Error(err);
