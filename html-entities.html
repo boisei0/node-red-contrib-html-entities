@@ -6,6 +6,7 @@
         <div class="form-row">
         <label for="node-input-property"><i class="fa fa-ellipsis-h"></i> Property</label>
         <input type="text" id="node-input-property" style="width:70%">
+        <input type="hidden" id="node-input-propertyType">
     </div>
     <div class="form-row">
         <label for="node-input-mode"><i class="fa fa-cog"></i> Mode</label>
@@ -32,7 +33,11 @@
                 value: ""
             },
             property: {
-                value: "payload"
+                value: "payload",
+                validate: RED.validators.typedInput('propertyType', false)
+            },
+            propertyType: {
+                value: "msg"
             },
             mode: {
                 value: "",
@@ -43,13 +48,18 @@
             }
         },
         oneditprepare: function() {
-            $("#node-input-property").typedInput({default: 'msg', types: ['msg']});
+            $("#node-input-property").typedInput({
+                default: 'msg',
+                types: ['msg', 'flow', 'global'],
+                typeField: "#node-input-propertyType"
+            });
         },
         inputs: 1,
         outputs: 1,
         label: function() {
             return this.name || 'HTML Entities'
         },
+        labelStyle: function() { return this.name ? 'node_label_italic' : '' },
         paletteLabel: 'html entities'
     });
 </script>
