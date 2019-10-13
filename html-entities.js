@@ -5,7 +5,7 @@ module.exports = function(RED) {
     function HeNode(config) {
         RED.nodes.createNode(this, config);
         this.property = config.property || "payload";
-        this.propertyType = config.propertyType || "msg";
+        this.propertyType = "msg";
         this.mode = config.mode;
 
         this.options = {
@@ -26,6 +26,7 @@ module.exports = function(RED) {
 
         /**
          * Get a property value as selected from a typedInput widget; capable of dealing with msg/flow/global property types.
+         * TODO: move these to a separate library for future usage.
          * @param {object} msg - the msg object to operate on
          * @param {string} prop - the property set by the typedInput
          * @param {string} propT - the property type as set by the typedInput
@@ -54,6 +55,7 @@ module.exports = function(RED) {
 
         /**
          * Set a value to the property selected in a typedInput widget; capable of dealing with msg/flow/global property types.
+         * TODO: move these to a separate library for future usage.
          * @param msg - the msg object to operate on
          * @param {string} prop - the property set by the typedInput
          * @param {string} propT - the property type as set by the typedInput
@@ -101,9 +103,7 @@ module.exports = function(RED) {
                     }
                 }
                 else {
-                    // value is undefined, pass through message object? At least flag done TODO: figure out and document
-                    send(msg);
-                    if (done) done();
+                    throw new Error(`The selected property ${node.propertyType}.${node.property} does not exist.`);
                 }
             }).then(function (value) {
                 return setValue(msg, node.property, node.propertyType, value)

@@ -52,7 +52,7 @@
     <p>This property defaults to <code>msg.payload</code> but can be configured from the interface.</p>
     <h3>References</h3>
     <ul>
-        <li><a href="https://www.npmjs.com/package/he">The <code>he</code> page</a> - Includes documentation for all options and modes</li>
+        <li><a href="https://www.npmjs.com/package/he">The <code>he</code>-library NPM page</a> - Includes documentation for all options and modes</li>
     </ul>
 </script>
 
@@ -67,10 +67,6 @@
             },
             property: {
                 value: "payload",
-                validate: RED.validators.typedInput('propertyType', false)
-            },
-            propertyType: {
-                value: "msg"
             },
             mode: {
                 value: "encode",
@@ -101,8 +97,7 @@
         oneditprepare: function() {
             $("#node-input-property").typedInput({
                 default: 'msg',
-                types: ['msg', 'flow', 'global'],
-                typeField: "#node-input-propertyType"
+                types: ['msg'],
             });
             let val = $("#node-input-mode").val();
             $('#options > .form-row').hide();
