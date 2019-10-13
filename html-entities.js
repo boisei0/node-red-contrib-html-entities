@@ -78,12 +78,21 @@ module.exports = function(RED) {
                 if (value !== undefined) {
                     switch (node.mode) {
                         case 'encode':
-                            return he.encode(value);
+                            return he.encode(value, {
+                                strict: node.optionsStrict,
+                                useNamedReferences: node.optionsUseNamedReferences,
+                                decimal: node.optionsPreferDecimal,
+                                encodeEverything: node.optionsEncodeEverything,
+                                allowUnsafeSymbols: node.optionsAllowUnsafeSymbols
+                            });
                         case 'escape':
                             return he.escape(value);
                         case 'decode':
                         case 'unescape':
-                            return he.decode(value);
+                            return he.decode(value, {
+                                strict: node.optionsStrict,
+                                isAttributeValue: node.optionsIsAttributeValue
+                            });
                         default:
                             const err = `The selected mode ${node.mode} is not known.`;
                             throw new Error(err);
