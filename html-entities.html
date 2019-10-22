@@ -1,14 +1,5 @@
 <script type="text/x-red" data-template-name="html-entities">
     <div class="form-row">
-        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
-        <input type="text" id="node-input-name" placeholder="Name">
-    </div>
-        <div class="form-row">
-        <label for="node-input-property"><i class="fa fa-ellipsis-h"></i> Property</label>
-        <input type="text" id="node-input-property" style="width:70%">
-        <input type="hidden" id="node-input-propertyType">
-    </div>
-    <div class="form-row">
         <label for="node-input-mode"><i class="fa fa-cog"></i> Mode</label>
         <select id="node-input-mode">
             <option value="encode">Encode</option>
@@ -16,6 +7,11 @@
             <option value="escape">Escape</option>
             <option value="unescape">Unescape</option>
         </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-property"><i class="fa fa-ellipsis-h"></i> Property</label>
+        <input type="text" id="node-input-property" style="width:70%">
+        <input type="hidden" id="node-input-propertyType">
     </div>
     <div id="options"><!-- options block inside -->
         <h5>Mode-specific options:</h2>
@@ -43,6 +39,10 @@
             <input type="checkbox" id="node-input-optionsIsAttributeValue" style="display: inline-block; width: 10%; vertical-align: top;">
             <label for="node-input-optionsIsAttributeValue" style="width: 85%;">Parse as attribute value</label>
         </div>
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
     </div>
 </script>
 
@@ -111,7 +111,7 @@
         inputs: 1,
         outputs: 1,
         label: function() {
-            return this.name || 'HTML Entities'
+            return this.name || 'HTML Entities - ' + this.mode
         },
         labelStyle: function() { return this.name ? 'node_label_italic' : '' },
         paletteLabel: 'html entities'
